@@ -34,10 +34,9 @@ pipeline {
   stage('Publish image to Docker Hub') {
           
             steps {
-        withCredentials([string(credentialsId: 'docker_hub_password', variable: 'Dockerpassword')]){
+        withDockerRegistry([string(credentialsId: 'docker_hub_password', variable: 'Dockerpassword')]) {
          sh "docker login -u prempk -p ${Dockerpassword} " 
-           }
-          sh  'docker push prempk/samplewebapp:latest'
+	 sh  'docker push prempk/samplewebapp:latest'
         //  sh  'docker push nikhilnidhi/samplewebapp:$BUILD_NUMBER' 
         }
                   
@@ -55,7 +54,7 @@ pipeline {
  stage('Run Docker container on remote hosts') {
              
             steps {
-                sh "docker -H ssh://jenkins@172.31.13.134 run -d -p 8003:8080 prempk/samplewebapp"
+                sh "docker -H ssh://ubuntu@172.31.13.134 run -d -p 8003:8080 prempk/samplewebapp"
  
             }
         }
