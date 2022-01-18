@@ -34,7 +34,7 @@ pipeline {
   stage('Publish image to Docker Hub') {
           
             steps {
-        withDockerRegistry([string(credentialsId: 'docker_hub_password', variable: 'Dockerpassword')]) {
+        withDockerRegistry([ credentialsId: "githubpass",variable: 'Dockerpassword'), url: "" ]) {
          sh "docker login -u prempk -p ${Dockerpassword} " 
 	 sh  'docker push prempk/samplewebapp:latest'
         //  sh  'docker push nikhilnidhi/samplewebapp:$BUILD_NUMBER' 
